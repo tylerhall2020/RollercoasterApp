@@ -289,7 +289,6 @@ const styles = StyleSheet.create({
   timer: {
     ...Typography.title,
     color: Colors.recordingRed,
-    fontVariant: ['tabular-nums'],
   },
   statusMessage: {
     ...Typography.subtitle,
