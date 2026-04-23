@@ -1,43 +1,31 @@
-import { enableScreens } from 'react-native-screens';
-enableScreens(false);
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import RecordScreen from './screens/RecordScreen';
 import EntryScreen from './screens/EntryScreen';
 import { Colors } from './constants/theme';
 
-export type RootStackParamList = {
-  Home: undefined;
-  Record: undefined;
-  Entry: { id: string };
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+export type NavScreen =
+  | { name: 'Home' }
+  | { name: 'Record' }
+  | { name: 'Entry'; id: string };
 
 export default function App() {
+  const [screen, setScreen] = useState<NavScreen>({ name: 'Home' });
+
+  const navigate = (s: NavScreen) => setScreen(s);
+  const goBack = () => setScreen({ name: 'Home' });
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <StatusBar style="dark" />
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: { backgroundColor: Colors.background },
-              headerTintColor: Colors.textPrimary,
-              headerShadowVisible: false,
-              cardStyle: { backgroundColor: Colors.background },
-            }}
-          >
-            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Record" component={RecordScreen} options={{ title: '', headerBackTitle: 'Back' }} />
-            <Stack.Screen name="Entry" component={EntryScreen} options={{ title: '', headerBackTitle: 'Journal' }} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+    <SafeAreaView style={styles.root}>
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
+      {screen.name === 'Home' && <HomeScreen navigate={navigate} />}
+      {screen.name === 'Record' && <RecordScreen navigate={navigate} goBack={goBack} />}
+      {screen.name === 'Entry' && <EntryScreen id={screen.id} goBack={goBack} />}
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: Colors.background },
+});
