@@ -6,16 +6,7 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: Colors.background },
-          headerTintColor: Colors.textPrimary,
-          headerShadowVisible: false,
-          headerTitleStyle: { fontWeight: '600', fontSize: 17 },
-          contentStyle: { backgroundColor: Colors.background },
-          animation: 'slide_from_right',
-        }}
-      >
+      <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen
           name="record"
@@ -23,7 +14,6 @@ export default function RootLayout() {
             title: '',
             headerBackTitle: 'Back',
             presentation: 'modal',
-            animation: 'slide_from_bottom',
           }}
         />
         <Stack.Screen
@@ -31,6 +21,8 @@ export default function RootLayout() {
           options={{
             title: '',
             headerBackTitle: 'Journal',
+            headerStyle: { backgroundColor: Colors.background },
+            headerTintColor: Colors.textPrimary,
           }}
         />
       </Stack>
